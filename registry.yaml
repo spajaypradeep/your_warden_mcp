@@ -1,0 +1,13 @@
+# Policy definitions for MCP Guard
+tools:
+  - name: read_email
+    category: untrusted_content
+    description: Read email content (potentially containing malicious payload)
+
+  - name: read_private_file
+    category: private_data
+    description: Read a private file from the system
+
+  - name: send_email
+    category: outbound
+    description: Send an email to an external recipient

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MCP Guard Dashboard</title>
+    <style>
+        body {font-family:Arial,Helvetica,sans-serif;margin:2rem;}
+        h1,h2 {color:#2c3e50;}
+        table {border-collapse:collapse;width:100%;margin-bottom:2rem;}
+        th,td {border:1px solid #ddd;padding:8px;text-align:left;}
+        th {background:#f2f2f2;}
+        tr:nth-child(even) {background:#f9f9f9;}
+        .status-blocked {color:#e74c3c;font-weight:bold;}
+        .status-allowed {color:#2ecc71;}
+        .status-pending {color:#f39c12;}
+    </style>
+</head>
+<body>
+    <h1>MCP Guard Dashboard</h1>
+
+    <section>
+        <h2>Pending Approvals</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Session ID</th><th>Tool</th><th>Arguments</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for appt in pending_approvals %}
+                <tr>
+                    <td>{{ appt.id }}</td>
+                    <td>{{ appt.session_id }}</td>
+                    <td>{{ appt.tool_name }}</td>
+                    <td>{{ appt.arguments }}</td>
+                    <td class="status-{{ appt.status }}">{{ appt.status|title }}</td>
+                </tr>
+                {% endfor %}
+                {% if not pending_approvals %}
+                <tr><td colspan="5"><em>No pending approvals.</em></td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Recent Audit Log (most recent 50)</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Timestamp</th><th>Session ID</th><th>Tool</th><th>Action</th><th>Reason</th></tr>
+            </thead>
+            <tbody>
+                {% for log in audit_logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.timestamp }}</td>
+                    <td>{{ log.session_id }}</td>
+                    <td>{{ log.tool_name }}</td>
+                    <td class="status-{{ log.action_taken }}">{{ log.action_taken|title }}</td>
+                    <td>{{ log.reason }}</td>
+                </tr>
+                {% endfor %}
+                {% if not audit_logs %}
+                <tr><td colspan="6"><em>No audit entries yet.</em></td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p><small>Reload the page to refresh data.</small></p>
+    </footer>
+</body>
+</html>
